@@ -76,7 +76,6 @@ $$
 | /128     | 5          | 4                                  | 16384                              |
 | /256     | 6          | 8                                  | 32768                              |
 
-
 ## 设置独立看门狗步骤
 
 1. 取消寄存器写保护
@@ -102,7 +101,7 @@ $$
 设置窗口值的函数，参数必须低于0x80：
 
 ```c
-void WWDG_SetWindowValue(uint8_t WindowValue)；
+void WWDG_SetWindowValue(uint8_t WindowValue);
 ```
 
 设置分频值函数，可选参数为 WWDG_Prescaler_1（2/4/8）：
@@ -144,7 +143,7 @@ void WWDG_IRQHandler(void)
 窗口看门狗超时计算时间如下：
 
 $$
-T_{wwdg} = T_{pclk1}\times 4096 \times \ 2^{WDGTB} \times (t[5:0] + 1) 
+T_{wwdg} = T_{pclk1}\times 4096 \times \ 2^{WDGTB} \times (t[5:0] + 1)
 $$
 
 其中，$T_{wwdg}$为窗口看门狗超时时间，$WDGTB$为预分频系数，$T_{pclk1}$为APB1的时钟频率，$t[5:0]$为计数器低6位。
