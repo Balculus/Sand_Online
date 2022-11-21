@@ -2,7 +2,7 @@
 layout: post
 title: 电力系统中的谐波问题
 date: 2022-09-13
-Author: 来自第一世界
+author: 来自第一世界
 tags: [电力系统]
 comments: false
 ---
@@ -36,8 +36,6 @@ comments: false
 
 # 主要危害
 
-
 # 防治手段
-
 
 # 实践需求

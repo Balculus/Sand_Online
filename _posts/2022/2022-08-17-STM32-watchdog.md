@@ -2,7 +2,7 @@
 layout: post
 title: STM32 看门狗
 date: 2022-08-17
-Author: 来自第一世界
+author: 来自第一世界
 tags: [STM32]
 comments: false
 ---
