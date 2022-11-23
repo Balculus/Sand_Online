@@ -65,11 +65,13 @@ IWDG_Enable(); //使能IWDG
 
 取消 IWDG_PR 和 IWDG_RLR 寄存器 的写保护， 这样才可以设置寄存器 IWDG_PR 和 IWDG_RLR 的值，函数为：
 
+```c
 HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg);
+```
 
 参数 hiwdg 为结构体，定义如下：
 
-```C
+```c
 typedef struct 
 { 
 	IWDG_TypeDef *Instance; 
