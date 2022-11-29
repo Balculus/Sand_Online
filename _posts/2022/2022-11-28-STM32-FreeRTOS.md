@@ -101,9 +101,31 @@ TaskHandle_t xTaskCreateStatic(
 * NULL：任务创建失败；
 * 其他值：任务创建成功，返回任务的任务句柄。
 
-函数 vTaskDelete() 用于删除上述两个函数所创建的任务
+函数 `vTaskDelete()` 用于删除上述两个函数所创建的任务。
 
+### 挂起与恢复任务
 
+函数 `vTaskSuspend()` 用于将某个任务设置为挂起状态：
 
+```c
+void vTaskSuspend( TaskHandle_t xTaskToSuspend)
+```
 
-111
+参数为任务的句柄。
+
+函数 `vTaskResume()` 将任务从挂起态恢复到就绪态，只能够恢复由 `vTaskSuspend()` 挂起的任务：
+
+```c
+void vTaskResume( TaskHandle_t xTaskToResume)
+```
+
+函数 `xTaskResumeFromISR()` 用于在中断服务函数中恢复一个任务：
+
+```c
+BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume)
+```
+
+返回值：
+
+* pdTRUE：恢复运行的任务的任务优先级等于或者高于正在运行的任务；
+* pdFALSE：恢复运行的任务的任务优先级低于当前正在运行的任务 。
