@@ -47,8 +47,63 @@ void vATaskFunction(void *pvParameters)
 }
 ```
 
+### 任务创建及相关函数
+
+函数 `xTaskCreate()` 用于创建一个任务，其中所需 RAM 自动分配。新创建的任务默认就绪态的，如果当前没有比它更高优先级的任务运行那么此任务就会立即进入运行态开始运行 ，不管在任务调度器启动前还是启动后，都可以创建任务。
+
+函数原型为：
+
+```c
+BaseType_t xTaskCreate( 
+	TaskFunction_t pxTaskCode, 
+	const char * const pcName, 
+	const uint16_t usStackDepth, 
+	void * const pvParameters, 
+	UBaseType_t uxPriority, 
+	TaskHandle_t * const pxCreatedTask )
+```
+
+* pxTaskCode：任务函数；
+* pcName：任务名字，一般用于追踪和调试，任务名字长度不能超过 configMAX_TASK_NAME_LEN；
+* usStackDepth：任务堆栈大小，注意实际申请到的堆栈是 usStackDepth的 4倍。其中空闲任务的任务堆栈大小 为 configMINIMAL_STACK_SIZE；
+* pvParameters：传递给任务函数的参数 ；
+* uxPriotiry：任务优先级，范围 0 ~ configMAX_PRIORITIES-1；
+* pxCreatedTask：任务句柄 ，任务创建成功以后会返回此任务的任务句柄 这个句柄其实就是任务的任务堆栈。 此参数就用来保存这个任务句柄。其他 API函数可能会使用到这个句柄。
+
+返回值：
+
+* pdPASS: 任务创建成功；
+* errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY 任务创建失败，因为堆内存不足！
+
+函数 `xTaskCreateStatic()` 与函数 `xTaskCreate()` 功能相同，但是所需 RAM 需要由用户来提供。
+
+```c
+TaskHandle_t xTaskCreateStatic( 
+	TaskFunction_t pxTaskCode, 
+	const char * const pcName, 
+	const uint32_t ulStackDepth, 
+	void * const pvParameters, 
+	UBaseType_t uxPriority, 
+	StackType_t * const puxStackBuffer, 
+	StaticTask_t * const pxTaskBuffer )
+```
+
+* pxTaskCode：任务函数；
+* pcName：任务名字，一般用于追踪和调试，任务名字长度不能超过 configMAX_TASK_NAME_LEN；
+* usStackDepth：任务堆栈大小，由于本函数是静态方法创建任务，所以任务堆栈由用户给出，一般是个数组，此参数就是这个数组的大小；
+* pvParameters：传递给任务函数的参数；
+* uxPriotiry：任务优先级，范围 0 ~ configMAX_PRIORITIES-1；
+* puxStackBuffer：任务堆栈，一般为数组，数组类型要为 StackType_t类型；
+* pxTaskBuffer：任务控制块。
+
+返回值：
+
+* NULL：任务创建失败；
+* 其他值：任务创建成功，返回任务的任务句柄。
+
+函数 vTaskDelete() 用于删除上述两个函数所创建的任务
 
 
 
 
-11
+111
