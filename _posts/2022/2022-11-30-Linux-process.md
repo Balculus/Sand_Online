@@ -8,6 +8,79 @@ comments: false
 ---
 记录 Linux 学习过程中需要总结的点
 
+# Linux 基本操作
+
+## 文件操作
+
+### open 函数
+
+Linux编程下 `open()` 函数的用法
+
+定义函数：
+
+```c
+int open( const char * pathname, int flags);
+int open( const char * pathname,int flags, mode_t mode);
+```
+
+返回值：返回 0 值，表示成功，只要有一个权限被禁止则返回 -1。
+
+一般的写法是
+
+```c
+if((fd=open("/dev/ttys0", O_RDWR | O_NOCTTY | O_NDELAY)<0)
+{
+	perror("open");
+}
+```
+
+第二参数 flags 所用参数：
+
+* O_RDONLY 只读打开。
+* O_WRONLY 只写打开。
+* O_RDWR 读、写打开。
+* O_APPEND 每次写时都加到文件的尾端。
+* O_CREAT 若此文件不存在则创建它。使用此选择项时，需同时说明第三个参数mode，用其说明该新文件的存取许可权位。
+* O_EXCL 如果同时指定了O_CREAT，而文件已经存在，则出错。这可测试一个文件是否存在，如果不存在则创建此文件成为一个原子操作。
+* O_TRUNC 如果此文件存在，而且为只读或只写成功打开，则将其长度截短为 0。
+* O_NOCTTY 如果 pathname 指的是终端设备，则不将此设备分配作为此进程的控制终端。
+* O_NONBLOCK 如果 pathname 指的是一个 FIFO、一个块特殊文件或一个字符特殊文件，则此选择项为此文件的本次打开操作和后续的 I/O 操作设置非阻塞方式。
+* O_NDELAY所产生的结果使 I/O 变成非阻塞模式(non-blocking)，在读取不到数据或是写入缓冲区已满会马上 return，而不会阻塞等待。
+* O_SYNC 使每次 write 都等到物理 I/O 操作完成。
+* O_APPEND 当读写文件时会从文件尾开始移动，也就是所写入的数据会以附加的方式加入到文件后面。
+* O_NOFOLLOW 如果参数pathname 所指的文件为一符号连接，则会令打开文件失败。
+* O_DIRECTORY 如果参数pathname 所指的文件并非为一目录，则会令打开文件失败。
+
+这些控制字都是通过“或”符号分开。
+
+### write 函数
+
+`write()` 会把参数 buf 所指的内存写入 count 个字节到参数 fd 所指的文件内。
+
+返回值：如果顺利 `write()` 会返回实际写入的字节数（len）。当有错误发生时则返回 -1，错误代码存入errno 中。
+
+```c
+#include <unistd>
+ssize_t write(int filedes, void *buf, size_t nbytes);
+// 返回：若成功则返回写入的字节数，若出错则返回-1
+// filedes：文件描述符
+// buf:待写入数据缓存区
+// nbytes:要写入的字节数
+```
+
+### read 函数
+
+函数从打开的设备或文件中读取数据。
+
+```c
+#include <unistd.h>  
+ssize_t read(int fd, void *buf, size_t count);  
+```
+
+返回值：成功返回读取的字节数，出错返回-1 并设置 errno，如果在调 read 之前已到达文件末尾，则这次 read 返回0
+
+## Linux 进程
+
 ### 进程状态
 
 * D：不可中断的深度睡眠 状态 ，处于这种状态 的进程 不 能响应异步信号；
@@ -110,8 +183,3 @@ int mkfifo(const char *pathname, mode_t mode);
 `mkfifo()` 创建一个真实存在于文件系统中的命名管道文件，参数 pathname 指定了文件名，参数 mode 则指定了文件的读写权限。函数成功返回 0，否则返回-1并设置errno
 
 `mkfifo()` 创建命名管道文件后，需要通过命名管道通信的进程需要打开该管道文件，然后通过 `read`、`write` 函数像操作普通文件一样进行通信。
-
-
-
-
-111
