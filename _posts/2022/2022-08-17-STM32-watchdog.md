@@ -151,7 +151,7 @@ $$
 * 当递减计数器值小于 0x40 时复位（如果看门狗已激活）
 * 在窗口之外重载递减计数器时复位（如果看门狗已激活）
 
-![](https://raw.githubusercontent.com/Balculus/picbed/master/202302061031759.png)
+![](https://raw.githubusercontent.com/Balculus/picbed/master/202302061031759.png)![](https://raw.githubusercontent.com/Balculus/picbed/master/2022/202302061104799.png)
 
 如图所示，T[6:0]就是控制寄存器 （WWDG_CR）的低七位，W[6:0]即是配置寄存器（WWDG->CFR ）的低七位。T[6:0]就是窗口看门狗的计数器，而W[6:0]则是窗口看门狗的上窗口，下窗口值是固定的（0X40）。当窗口看门狗的计数器在上窗口值之外被刷新，或者低于下窗口值都会产生复位。上窗口值（W[6:0]）是由用户自己设定的，根据实际要求来设计窗口值，但是一定要确保窗口值大于0X40，否则窗口就不存在了。
 
